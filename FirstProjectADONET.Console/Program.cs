@@ -9,14 +9,16 @@ namespace FirstProjectADONET.Console
         delegate void Table(string text);
         static void Main(string[] args)
         {
-            string dbName = "UniversityWS";
+            string dbName = "University";
 
-            Table table = (text) => CreateDatabase(text);
+            Table table = CreateDatabase;
             table(dbName);
 
-            Table table2 = (text) => CreateTableGruppa(text);
-            table2(dbName);
+            table = CreateTableGruppa;
+            table(dbName);
         }
+
+        #region Создание базы данных
         static void CreateDatabase(string dbName)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -32,8 +34,7 @@ namespace FirstProjectADONET.Console
                     connection.Open();
                     
                     command.CommandText = $"Create Database {dbName}";
-                    //if(command.ExecuteNonQuery() > 0)
-                    //    System.Console.WriteLine("База данных создана");
+                    command.ExecuteNonQuery();
                 }
                 catch (Exception exception)
                 {
@@ -41,6 +42,9 @@ namespace FirstProjectADONET.Console
                 }
             }
         }
+        #endregion
+
+        #region Создание таблицы
         static void CreateTableGruppa(string dbName)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -62,8 +66,7 @@ namespace FirstProjectADONET.Console
                         "[Name] nvarchar(20) not null" +
                         ")";
 
-                    //if (command.ExecuteNonQuery() > 0)
-                    //    System.Console.WriteLine("Таблица создана");
+                    command.ExecuteNonQuery();
                 }
                 catch (Exception exception)
                 {
@@ -71,5 +74,6 @@ namespace FirstProjectADONET.Console
                 }
             }
         }
+        #endregion
     }
 }
